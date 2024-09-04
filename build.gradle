@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+    id "io.qameta.allure" version "2.9.6"
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.junit.jupiter:junit-jupiter:5.7.0'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testRuntimeOnly group: 'junit', name: 'junit', version: '4.12'
+    testImplementation 'com.codeborne:selenide:6.12.2'
+    testImplementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '5.0.3'
+    implementation group: 'org.json', name: 'json', version: '20090211'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+    testImplementation 'io.qameta.allure:allure-selenide:2.12.1'
+
+}
+
+
+tasks.withType(Test){
+    useJUnitPlatform()
+}
+
+
+task chrome(type: Test) {
+    systemProperties['selenide.browser'] = 'firefox'
+    systemProperties['selenide.startMaximized'] = 'true'
+    systemProperties['selenide.timeout'] = '8000'
+    systemProperties['selenide.headless'] = 'true'
+    systemProperty('environment', 'Live')
+    maxParallelForks = 4
+
+}
+
+task firefox(type: Test) {
+    systemProperties['selenide.browser'] = 'firefox'
+    systemProperties['selenide.startMaximized'] = 'true'
+    systemProperty('environment', 'Live')
+
+}
+
